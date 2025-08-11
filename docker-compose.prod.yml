@@ -23,6 +23,8 @@ services:
       # HTTPS router for azuracast.whiskeylaser.com
       - "traefik.http.routers.u40wg4kkckkk8kwok8g04k8c.rule=Host(`azuracast.whiskeylaser.com`) && PathPrefix(`/`)"
       - traefik.http.routers.u40wg4kkckkk8kwok8g04k8c.entryPoints=http
+      - traefik.docker.network=coolify-traefik
+      - traefik.http.services.u40wg4kkckkk8kwok8g04k8c.loadbalancer.server.port=6970
     environment:
       - AZURACAST_HTTP_PORT=6970
       - AZURACAST_HTTPS_PORT=6969
@@ -47,6 +49,8 @@ services:
       options:
         max-size: "1m"
         max-file: "5"
+    networks:
+      - coolify-traefik
 
   updater:
     container_name: azuracast_updater
