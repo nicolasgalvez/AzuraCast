@@ -24,6 +24,9 @@ services:
       - 6969:6969
       - 6970:6970
       - 2022:2022
+    network:
+      name:
+      - coolify-proxy
     env_file:
       - .env
     volumes:
@@ -69,3 +72,6 @@ volumes:
   station_data: { }
   www_uploads: { }
   backups: { }
+networks:
+  coolify-proxy:
+    external: true
