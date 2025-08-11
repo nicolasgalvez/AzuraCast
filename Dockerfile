@@ -103,8 +103,7 @@ VOLUME "/var/azuracast/storage/shoutcast2"
 VOLUME "/var/azuracast/storage/stereo_tool"
 VOLUME "/var/azuracast/storage/uploads"
 
-EXPOSE 80 443 2022
-EXPOSE 8000-8999
+EXPOSE 80
 
 # Sensible default environment variables.
 ENV LANG="en_US.UTF-8" \
