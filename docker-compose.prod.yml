@@ -21,8 +21,8 @@ services:
       - traefik.enable=true
 
       # HTTPS router for azuracast.whiskeylaser.com
-      - traefik.http.routers.azuracast.rule=Host(`azuracast.whiskeylaser.com`)
-      - traefik.http.routers.azuracast.entryPoints=http
+      - "traefik.http.routers.u40wg4kkckkk8kwok8g04k8c.rule=Host(`azuracast.whiskeylaser.com`) && PathPrefix(`/`)"
+      - traefik.http.routers.u40wg4kkckkk8kwok8g04k8c.entryPoints=http
     environment:
       - AZURACAST_HTTP_PORT=6970
       - AZURACAST_HTTPS_PORT=6969
