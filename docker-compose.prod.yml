@@ -22,23 +22,11 @@ services:
 
       # HTTPS router for azuracast.whiskeylaser.com
       - traefik.http.routers.azuracast.rule=Host(`azuracast.whiskeylaser.com`)
-      - traefik.http.routers.azuracast.entryPoints=https
-      - traefik.http.routers.azuracast.tls=true
-      - traefik.http.routers.azuracast.tls.certresolver=letsencrypt
+      - traefik.http.routers.azuracast.entryPoints=http
+      - traefik.docker.network=coolify-traefik
 
       # Service points to the container's internal HTTP port
       - traefik.http.services.azuracast.loadbalancer.server.port=6970
-
-      # Redirect HTTP → HTTPS
-      - traefik.http.middlewares.azuracast-https-redirect.redirectscheme.scheme=https
-      - traefik.http.routers.azuracast-redirect.rule=Host(`azuracast.whiskeylaser.com`)
-      - traefik.http.routers.azuracast-redirect.entryPoints=http
-      - traefik.http.routers.azuracast-redirect.middlewares=azuracast-https-redirect
-
-      # SFTP (TCP) via Traefik entryPoint named "sftp" (must exist on the proxy)
-      - traefik.tcp.routers.azuracast-sftp.entryPoints=sftp
-      - traefik.tcp.routers.azuracast-sftp.rule=HostSNI(`*`)
-      - traefik.tcp.services.azuracast-sftp.loadbalancer.server.port=2022
     environment:
       - AZURACAST_HTTP_PORT=6970
       - AZURACAST_HTTPS_PORT=6969
@@ -63,6 +51,8 @@ services:
       options:
         max-size: "1m"
         max-file: "5"
+    networks:
+      - coolify-traefik
 
   updater:
     container_name: azuracast_updater
@@ -86,3 +76,7 @@ volumes:
   station_data: { }
   www_uploads: { }
   backups: { }
+
+networks:
+  coolify-traefik:
+    external: true
