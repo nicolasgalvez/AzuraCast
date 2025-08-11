@@ -18,12 +18,31 @@ services:
     image: "ghcr.io/azuracast/azuracast:${AZURACAST_VERSION:-latest}"
     labels:
       - "com.centurylinklabs.watchtower.scope=azuracast"
-    # Want to customize the HTTP/S ports? Follow the instructions here:
-    # https://www.azuracast.com/docs/administration/docker/#using-non-standard-ports
-    ports:
-      - '${AZURACAST_HTTP_PORT:-80}:${AZURACAST_HTTP_PORT:-80}'
-      - '${AZURACAST_HTTPS_PORT:-443}:${AZURACAST_HTTPS_PORT:-443}'
-      - '${AZURACAST_SFTP_PORT:-2022}:${AZURACAST_SFTP_PORT:-2022}'
+      - traefik.enable=true
+
+      # HTTPS router for azuracast.whiskeylaser.com
+      - traefik.http.routers.azuracast.rule=Host(`azuracast.whiskeylaser.com`)
+      - traefik.http.routers.azuracast.entryPoints=https
+      - traefik.http.routers.azuracast.tls=true
+      - traefik.http.routers.azuracast.tls.certresolver=letsencrypt
+
+      # Service points to the container's internal HTTP port
+      - traefik.http.services.azuracast.loadbalancer.server.port=6970
+
+      # Redirect HTTP → HTTPS
+      - traefik.http.middlewares.azuracast-https-redirect.redirectscheme.scheme=https
+      - traefik.http.routers.azuracast-redirect.rule=Host(`azuracast.whiskeylaser.com`)
+      - traefik.http.routers.azuracast-redirect.entryPoints=http
+      - traefik.http.routers.azuracast-redirect.middlewares=azuracast-https-redirect
+
+      # SFTP (TCP) via Traefik entryPoint named "sftp" (must exist on the proxy)
+      - traefik.tcp.routers.azuracast-sftp.entryPoints=sftp
+      - traefik.tcp.routers.azuracast-sftp.rule=HostSNI(`*`)
+      - traefik.tcp.services.azuracast-sftp.loadbalancer.server.port=2022
+    environment:
+      - AZURACAST_HTTP_PORT=6970
+      - AZURACAST_HTTPS_PORT=6969
+      - AZURACAST_SFTP_PORT=2022
     volumes:
       - station_data:/var/azuracast/stations
       - backups:/var/azuracast/backups
