@@ -74,7 +74,3 @@ volumes:
   station_data: { }
   www_uploads: { }
   backups: { }
-
-networks:
-  coolify-proxy:
-    external: true
