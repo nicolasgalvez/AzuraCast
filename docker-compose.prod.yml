@@ -47,8 +47,6 @@ services:
       options:
         max-size: "1m"
         max-file: "5"
-    networks:
-      - coolify-traefik
 
   updater:
     container_name: azuracast_updater
