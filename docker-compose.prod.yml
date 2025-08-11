@@ -25,7 +25,6 @@ services:
       - 6970:6970
       - 2022:2022
     networks:
-      name:
       - coolify-proxy
     env_file:
       - .env
