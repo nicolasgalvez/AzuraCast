@@ -20,8 +20,6 @@ services:
       - "com.centurylinklabs.watchtower.scope=azuracast"
     # Want to customize the HTTP/S ports? Follow the instructions here:
     # https://www.azuracast.com/docs/administration/docker/#using-non-standard-ports
-    ports:
-    - "10080:80"
     env_file:
       - .env
     volumes:
