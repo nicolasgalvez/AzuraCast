@@ -21,9 +21,11 @@ services:
     # Want to customize the HTTP/S ports? Follow the instructions here:
     # https://www.azuracast.com/docs/administration/docker/#using-non-standard-ports
     ports:
-      - "80:80"
-      - "443:443"
-      - "2022:2022"
+      - 6969:6969
+      - 6970:6970
+      - 2022:2022
+    env_file:
+      - .env
     volumes:
       - station_data:/var/azuracast/stations
       - backups:/var/azuracast/backups
