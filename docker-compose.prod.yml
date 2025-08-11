@@ -24,9 +24,6 @@ services:
       - '${AZURACAST_HTTP_PORT:-80}:${AZURACAST_HTTP_PORT:-80}'
       - '${AZURACAST_HTTPS_PORT:-443}:${AZURACAST_HTTPS_PORT:-443}'
       - '${AZURACAST_SFTP_PORT:-2022}:${AZURACAST_SFTP_PORT:-2022}'
-    env_file:
-      - azuracast.env
-      - .env
     volumes:
       - station_data:/var/azuracast/stations
       - backups:/var/azuracast/backups
