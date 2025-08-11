@@ -23,10 +23,6 @@ services:
       # HTTPS router for azuracast.whiskeylaser.com
       - traefik.http.routers.azuracast.rule=Host(`azuracast.whiskeylaser.com`)
       - traefik.http.routers.azuracast.entryPoints=http
-      - traefik.docker.network=coolify-traefik
-
-      # Service points to the container's internal HTTP port
-      - traefik.http.services.azuracast.loadbalancer.server.port=6970
     environment:
       - AZURACAST_HTTP_PORT=6970
       - AZURACAST_HTTPS_PORT=6969
